@@ -1,0 +1,3 @@
+1. 스프링 레거시 순서
+ -1) pom.xml 을 통하여, 기본적인 라이브러리를 체크(Spring version, Java version 등등)
+ -2) web.xml 체크 → Tomcat이 읽어들이는 환경(설정) 파일
