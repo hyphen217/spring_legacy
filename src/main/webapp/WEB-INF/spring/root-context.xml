@@ -2,7 +2,39 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+	
+	<!-- HikariConfig hikariConfig = new com.zaxxer.hikari.HikariConfig() 객체 생성해서 applicationContext.xml에 넣어라(Service,Repository클래스)-->
+<!-- <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property> -->
+<!-- <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe"></property> -->
+	  <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+      <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521/xe"></property>
+      <property name="username" value="scott"></property>
+      <property name="password" value="tiger"></property>
+   </bean>
+
+	<!-- dataSource.getConnection() DB와 커넥션 객체를 갖고 있어서 오라클과 연결되어 데이터를 사용할 수 있다-->
+	<!-- HikariCP(커넥션풀) configuration -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<!-- Mybatis설정 -->
+	<!-- SqlSessionFactoryBean sqlSessionFactory = new org.mybatis.spring.SqlSessionFactoryBean(); -->
+	<!-- sqlSessionFactory.setDataSource(dataSource); -->
+	<!-- 상기와 같이 호출되고 있다 -->
+	<!-- 1.번 방법을 위하여 mapperLocations 을 추가 함 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:/mappers/**/*.xml" />
+	</bean>
+	<!-- 실질적 Mybatis = sqlSession -->
+	<!-- 1번 방식 사용을 위한 sqlSession(보통 id를 sqlSession으로 설정한다) -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
 </beans>

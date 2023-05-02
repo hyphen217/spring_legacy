@@ -32,7 +32,6 @@
 		<!-- HomeController.java에서 return "hello"만 적어도 ⇒ "/WEB-INF/views/hello.jsp"으로 자동으로 바꿔준다. -->
 	</beans:bean>
 
-	<context:component-scan
-		base-package="edu.global.ex" />
+	<context:component-scan base-package="edu.global.ex" />
 	<!-- edu.global.ex 밑에 있는 @component를 모두 읽어들여라 (컨트롤러, 서비스, 레포지토리, 매퍼) -->
 </beans:beans>
